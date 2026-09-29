@@ -6,7 +6,6 @@ on:
       - main
   workflow_dispatch:
 
-
 jobs:
   build:
     runs-on: ubuntu-22.04
@@ -25,11 +24,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install buildozer cython
 
-      
       - name: Build APK
-  working-directory: belkuri-crunch
-  run: |
-        
         run: |
           set -o pipefail
           buildozer -v android debug 2>&1 | tee build.log
@@ -42,4 +37,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: belkuri-crunch-apk
-          path: belkuri-crunch/bin/*.apk
+          path: bin/*.apk

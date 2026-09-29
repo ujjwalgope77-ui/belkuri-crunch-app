@@ -26,7 +26,7 @@ jobs:
           pip install buildozer cython
 
       - name: Build APK
-        working-directory: belkuri-crunch
+        
         run: |
           set -o pipefail
           buildozer -v android debug 2>&1 | tee build.log

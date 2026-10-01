@@ -43,6 +43,11 @@ jobs:
           rm -rf .buildozer
           rm -rf bin
 
+      - name: Remove problematic charset-normalizer requirement
+        run: |
+          sed -i 's/,charset-normalizer==2.1.1//' buildozer.spec
+          grep '^requirements' buildozer.spec
+
       - name: Build APK
         run: |
           buildozer -v android debug

@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Checkout repository
@@ -20,33 +20,66 @@ jobs:
           distribution: temurin
           java-version: "17"
 
-      - name: Setup Python 3.11
+      - name: Setup Python 3.14
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: "3.14"
 
       - name: Install system dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y \
-            git zip unzip autoconf libtool pkg-config \
-            zlib1g-dev libncurses5-dev libncursesw5-dev cmake \
-            libffi-dev libssl-dev
+            git zip unzip \
+            openjdk-17-jdk \
+            autoconf automake libtool \
+            pkg-config \
+            zlib1g-dev \
+            libncurses5-dev \
+            libncursesw5-dev \
+            libtinfo6 \
+            cmake \
+            libffi-dev \
+            libssl-dev \
+            gettext
 
-      - name: Install Buildozer
+      - name: Install Rust
         run: |
-          python -m pip install --upgrade pip setuptools wheel
-          python -m pip install buildozer
+          curl https://sh.rustup.rs -sSf | sh -s -- -y
+          echo "$HOME/.cargo/bin" >> "$GITHUB_PATH"
+          "$HOME/.cargo/bin/rustc" --version
+          "$HOME/.cargo/bin/cargo" --version
+
+      - name: Install Buildozer and build dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install \
+            git+https://github.com/kivy/buildozer.git
+          python -m pip install \
+            legacy-cgi \
+            setuptools \
+            cython==0.29.34
+
+      - name: Configure Buildozer for current p4a
+        run: |
+          grep -q '^p4a.branch' buildozer.spec \
+            && sed -i 's/^p4a.branch.*/p4a.branch = develop/' buildozer.spec \
+            || printf '\np4a.branch = develop\n' >> buildozer.spec
+
+          grep -q '^android.api' buildozer.spec \
+            && sed -i 's/^android.api.*/android.api = 36/' buildozer.spec \
+            || printf 'android.api = 36\n' >> buildozer.spec
+
+          grep -q '^android.ndk' buildozer.spec \
+            && sed -i 's/^android.ndk.*/android.ndk = 29/' buildozer.spec \
+            || printf 'android.ndk = 29\n' >> buildozer.spec
+
+          echo "===== p4a / Android configuration ====="
+          grep -E '^(p4a.branch|android.api|android.ndk)' buildozer.spec || true
 
       - name: Clean Buildozer cache
         run: |
           rm -rf .buildozer
           rm -rf bin
-
-      - name: Remove problematic charset-normalizer requirement
-        run: |
-          sed -i 's/,charset-normalizer==2.1.1//' buildozer.spec
-          grep '^requirements' buildozer.spec
 
       - name: Build APK
         run: |

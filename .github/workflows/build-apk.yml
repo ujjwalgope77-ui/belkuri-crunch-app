@@ -1,61 +1,32 @@
-name: Build BELKURI CRUNCH APK
 
-on:
-  workflow_dispatch:
-  push:
-    branches:
-      - main
-
-jobs:
-  build:
-    runs-on: ubuntu-24.04
-
-    steps:
-      # 1. Checkout
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      # 2. Java 17
-      - name: Setup Java 17
-        uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: "17"
-
-      # 3. Python 3.14
-      - name: Setup Python 3.14
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.14"
-
-      # 4. System dependencies
-      - name: Install system dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y \
-            git \
-            zip \
-            unzip \
-            openjdk-17-jdk \
-            autoconf \
-            automake \
-            libtool \
-            pkg-config \
-            zlib1g-dev \
-            libncurses5-dev \
-            libncursesw5-dev \
-            libtinfo6 \
-            cmake \
-            libffi-dev \
-            libssl-dev \
-            gettext \
-            libbz2-dev \
-            liblzma-dev \
-            libreadline-dev \
-            libgdbm-dev \
-            libdb-dev \
-            uuid-dev \
-            tk-dev
+- name: Install system dependencies
+  run: |
+    sudo apt-get update
+    sudo apt-get install -y \
+      git \
+      zip \
+      unzip \
+      openjdk-17-jdk \
+      autoconf \
+      automake \
+      libtool \
+      libltdl-dev \
+      pkg-config \
+      zlib1g-dev \
+      libncurses5-dev \
+      libncursesw5-dev \
+      libtinfo6 \
+      cmake \
+      libffi-dev \
+      libssl-dev \
+      gettext \
+      libbz2-dev \
+      liblzma-dev \
+      libreadline-dev \
+      libgdbm-dev \
+      libdb-dev \
+      uuid-dev \
+      tk-dev
 
       # 5. Install Rust
       - name: Install Rust

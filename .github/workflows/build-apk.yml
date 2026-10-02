@@ -11,20 +11,24 @@ jobs:
     runs-on: ubuntu-24.04
 
     steps:
+      # 1. Checkout
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # 2. Java 17
       - name: Setup Java 17
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: "17"
 
+      # 3. Python 3.14
       - name: Setup Python 3.14
         uses: actions/setup-python@v5
         with:
           python-version: "3.14"
 
+      # 4. System dependencies
       - name: Install system dependencies
         run: |
           sudo apt-get update
@@ -44,8 +48,16 @@ jobs:
             cmake \
             libffi-dev \
             libssl-dev \
-            gettext
+            gettext \
+            libbz2-dev \
+            liblzma-dev \
+            libreadline-dev \
+            libgdbm-dev \
+            libdb-dev \
+            uuid-dev \
+            tk-dev
 
+      # 5. Install Rust
       - name: Install Rust
         run: |
           curl https://sh.rustup.rs -sSf | sh -s -- -y
@@ -53,6 +65,7 @@ jobs:
           "$HOME/.cargo/bin/rustc" --version
           "$HOME/.cargo/bin/cargo" --version
 
+      # 6. Install Buildozer
       - name: Install Buildozer
         run: |
           python -m pip install --upgrade pip
@@ -63,9 +76,10 @@ jobs:
             setuptools \
             cython==0.29.34
 
+      # 7. Fix buildozer.spec
       - name: Fix buildozer.spec
         run: |
-          # Remove old/duplicate settings
+          # Remove old/duplicate configuration
           sed -i '/^[[:space:]]*p4a.branch[[:space:]]*=/d' buildozer.spec
           sed -i '/^[[:space:]]*android.api[[:space:]]*=/d' buildozer.spec
           sed -i '/^[[:space:]]*android.ndk[[:space:]]*=/d' buildozer.spec
@@ -76,7 +90,7 @@ jobs:
           sed -i 's/charset-normalizer==2.1.1,//g' buildozer.spec
           sed -i 's/charset-normalizer==2.1.1//g' buildozer.spec
 
-          # Add current Python 3.14 / p4a configuration
+          # Add Python 3.14 / p4a configuration
           printf '\np4a.branch = develop\n' >> buildozer.spec
           printf 'android.api = 36\n' >> buildozer.spec
           printf 'android.ndk = 29\n' >> buildozer.spec
@@ -91,20 +105,24 @@ jobs:
           echo "======================================"
           grep -E '^[[:space:]]*(p4a.branch|android.api|android.ndk|android.ndk_api)[[:space:]]*=' buildozer.spec || true
 
+      # 8. Clean previous build
       - name: Clean Buildozer cache
         run: |
           rm -rf .buildozer
           rm -rf bin
 
+      # 9. Build APK
       - name: Build APK
         run: |
           buildozer -v android debug
 
+      # 10. Check APK
       - name: Check generated APK
         run: |
           echo "Generated APK files:"
           find bin -maxdepth 1 -type f -name "*.apk" -print
 
+      # 11. Upload APK
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:

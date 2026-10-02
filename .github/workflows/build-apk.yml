@@ -29,9 +29,13 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y \
-            git zip unzip \
+            git \
+            zip \
+            unzip \
             openjdk-17-jdk \
-            autoconf automake libtool \
+            autoconf \
+            automake \
+            libtool \
             pkg-config \
             zlib1g-dev \
             libncurses5-dev \
@@ -59,20 +63,33 @@ jobs:
             setuptools \
             cython==0.29.34
 
-      - name: Configure Buildozer
+      - name: Fix buildozer.spec
         run: |
-          # Remove existing duplicate configuration lines
+          # Remove old/duplicate settings
           sed -i '/^[[:space:]]*p4a.branch[[:space:]]*=/d' buildozer.spec
           sed -i '/^[[:space:]]*android.api[[:space:]]*=/d' buildozer.spec
           sed -i '/^[[:space:]]*android.ndk[[:space:]]*=/d' buildozer.spec
+          sed -i '/^[[:space:]]*android.ndk_api[[:space:]]*=/d' buildozer.spec
 
-          # Add exactly one configuration for each option
+          # Remove problematic charset-normalizer
+          sed -i 's/,charset-normalizer==2.1.1//g' buildozer.spec
+          sed -i 's/charset-normalizer==2.1.1,//g' buildozer.spec
+          sed -i 's/charset-normalizer==2.1.1//g' buildozer.spec
+
+          # Add current Python 3.14 / p4a configuration
           printf '\np4a.branch = develop\n' >> buildozer.spec
           printf 'android.api = 36\n' >> buildozer.spec
           printf 'android.ndk = 29\n' >> buildozer.spec
 
-          echo "===== Android configuration ====="
-          grep -E '^[[:space:]]*(p4a.branch|android.api|android.ndk)[[:space:]]*=' buildozer.spec
+          echo "======================================"
+          echo "FINAL REQUIREMENTS"
+          echo "======================================"
+          grep '^requirements' buildozer.spec || true
+
+          echo "======================================"
+          echo "FINAL ANDROID CONFIGURATION"
+          echo "======================================"
+          grep -E '^[[:space:]]*(p4a.branch|android.api|android.ndk|android.ndk_api)[[:space:]]*=' buildozer.spec || true
 
       - name: Clean Buildozer cache
         run: |
@@ -83,8 +100,9 @@ jobs:
         run: |
           buildozer -v android debug
 
-      - name: List generated APK
+      - name: Check generated APK
         run: |
+          echo "Generated APK files:"
           find bin -maxdepth 1 -type f -name "*.apk" -print
 
       - name: Upload APK

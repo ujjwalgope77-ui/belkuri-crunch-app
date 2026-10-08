@@ -30,4 +30,4 @@ android.accept_sdk_license = True
 p4a.branch = master
 
 log_level = 2
-warn_on_root = 1
+warn_on_root = True

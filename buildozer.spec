@@ -11,11 +11,11 @@ requirements = python3,kivy,charset-normalizer==2.1.1
 version = 1.0.0
 
 orientation = portrait
-fullscreen = 0
+fullscreen = False
 
 # Add your logo later if desired:
 # presplash.filename = %(source.dir)s/assets/presplash.png
- icon.filename = %(source.dir)s/assets/belkui.png
+ icon.filename = %(source.dir)s/belkui.png
 
 android.api = 35
 android.minapi = 24

@@ -15,7 +15,7 @@ fullscreen = 0
 
 # Add your logo later if desired:
 # presplash.filename = %(source.dir)s/assets/presplash.png
-# icon.filename = %(source.dir)s/assets/belkuri.png
+ icon.filename = %(source.dir)s/assets/belkuri.png
 
 android.api = 35
 android.minapi = 24

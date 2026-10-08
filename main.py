@@ -14,7 +14,7 @@ from urllib.parse import quote
 import webbrowser
 
 APP_NAME = "BELKURI CRUNCH"
-WHATSAPP_NUMBER = "917477888445"
+WHATSAPP_NUMBER = "+917477888445"
 
 ORANGE = get_color_from_hex("#F57C00")
 GREEN = get_color_from_hex("#198754")

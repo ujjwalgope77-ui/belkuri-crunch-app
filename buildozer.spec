@@ -24,6 +24,7 @@ android.ndk_api = 24
 android.entrypoint = org.kivy.android.PythonActivity
 android.apptheme = @android:style/Theme.Material.Light.NoActionBar
 android.permissions = android.permission.INTERNET
+android.manifest.queries = <intent><action android:name="android.intent.action.VIEW"/><data android:scheme="https"/></intent>
 android.archs = arm64-v8a
 android.accept_sdk_license = True
 

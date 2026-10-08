@@ -12,6 +12,18 @@ from kivy.core.window import Window
 from kivy.utils import get_color_from_hex
 from urllib.parse import quote
 import webbrowser
+from kivy.utils import platform
+
+def open_url(url):
+    if platform == "android":
+        from jnius import autoclass
+        Intent = autoclass("android.content.Intent")
+        Uri = autoclass("android.net.Uri")
+        PythonActivity = autoclass("org.kivy.android.PythonActivity")
+        intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        PythonActivity.mActivity.startActivity(intent)
+    else:
+        webbrowser.open(url)
 
 APP_NAME = "BELKURI CRUNCH"
 WHATSAPP_NUMBER = "917477888445"

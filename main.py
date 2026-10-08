@@ -325,7 +325,7 @@ class OrderScreen(Screen):
 
         url = f"https://wa.me/{WHATSAPP_NUMBER}?text={quote(message)}"
         try:
-            webbrowser.open_url(url)
+            open_url(url)
         except Exception as exc:
             Popup(title="WhatsApp Error",
                   content=Label(text=f"Could not open WhatsApp.\n{exc}"),

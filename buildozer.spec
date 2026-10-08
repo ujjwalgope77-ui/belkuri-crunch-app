@@ -7,7 +7,7 @@ package.domain = com.belkuricrunch
 source.dir = .
 source.main = main.py
 source.include_exts = py,png,jpg,jpeg,kv,atlas,json,wav
-requirements = python3,kivy,charset-normalizer==2.1.1
+requirements = python3,kivy,pyjnius,charset-normalizer==2.1.1
 version = 1.0.0
 
 orientation = portrait

@@ -14,7 +14,7 @@ orientation = portrait
 fullscreen = False
 
 # Add your logo later if desired:
-# presplash.filename = %(source.dir)s/assets/presplash.png
+presplash.filename = %(source.dir)s/assets/presplash1.png
 icon.filename = %(source.dir)s/belkui.png
 
 android.api = 35

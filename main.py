@@ -39,10 +39,10 @@ GREY = get_color_from_hex("#777777")
 Window.clearcolor = LIGHT
 
 PRODUCTS = [
-    {"id": 1, "name": "Classic Potato Chips", "bengali": "ক্লাসিক পটেটো চিপস", "price": 5, "emoji": "🥔"},
-    {"id": 2, "name": "Masala Chips", "bengali": "মশালা চিপস", "price": 5, "emoji": "🌶️"},
-    {"id": 3, "name": "Chili Spicy Chips", "bengali": "স্পাইসি চিপস", "price": 10, "emoji": "🔥"},
-    {"id": 4, "name": "Special Crunch", "bengali": "স্পেশাল ক্রাঞ্চ", "price": 20, "emoji": "⭐"},
+    {"id": 1, "name": "Classic Potato Chips", "bengali": "ক্লাসিক পটেটো চিপস", "price": 5, "image": "products/classic.png"},
+    {"id": 2, "name": "Masala Chips", "bengali": "মশালা চিপস", "price": 5, "image": "products/masala.png"},
+    {"id": 3, "name": "Chili Spicy Chips", "bengali": "স্পাইসি চিপস", "price": 10, "image": "products/chili.png"},
+    {"id": 4, "name": "Special Crunch", "bengali": "স্পেশাল ক্রাঞ্চ", "price": 20, "image": "products/special.png"},
 ]
 
 cart = {}

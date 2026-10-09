@@ -41,7 +41,7 @@ Window.clearcolor = LIGHT
 PRODUCTS = [
     {"id": 1, "name": "Classic Potato Chips", "bengali": "ক্লাসিক পটেটো চিপস", "price": 5, "emoji": "🥔"},
     {"id": 2, "name": "Masala Chips", "bengali": "মশালা চিপস", "price": 5, "emoji": "🌶️"},
-    {"id": 3, "name": "Spicy Chips", "bengali": "স্পাইসি চিপস", "price": 10, "emoji": "🔥"},
+    {"id": 3, "name": "Chili Spicy Chips", "bengali": "স্পাইসি চিপস", "price": 10, "emoji": "🔥"},
     {"id": 4, "name": "Special Crunch", "bengali": "স্পেশাল ক্রাঞ্চ", "price": 20, "emoji": "⭐"},
 ]
 

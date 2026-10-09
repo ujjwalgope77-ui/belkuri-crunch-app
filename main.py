@@ -134,10 +134,10 @@ class HomeScreen(Screen):
                                  size_hint_y=None, height=dp(45)))
         for 
         FEATURES = [
-        ("icons/potato.png", "Fresh Potato"),
-        ("icons/crunchy.png", "Extra Crunchy"),
-        ("icons/spicy.png", "Desi Masala"),
-        ("icons/heart.png", "Made With Care"),
+        ("icons/"image":potato.png", "Fresh Potato"),
+        ("icons/"image":crunchy.png", "Extra Crunchy"),
+        ("icons/"image":spicy.png", "Desi Masala"),
+        ("icons/"image":heart.png", "Made With Care"),
         ]:
             content.add_widget(Label(text=feature, font_size=dp(17), color=DARK,
                                      size_hint_y=None, height=dp(42)))

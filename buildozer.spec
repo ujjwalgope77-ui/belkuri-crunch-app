@@ -1,0 +1,148 @@
+name: Build BELKURI CRUNCH APK
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+
+    steps:
+
+      # 1. Checkout
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. Java 17
+      - name: Setup Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      # 3. Python 3.11
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      # 4. System dependencies
+            # 4. System dependencies
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            git \
+            zip \
+            unzip \
+            openjdk-17-jdk \
+            autoconf \
+            automake \
+            libtool \
+            libtool-bin \
+            libltdl-dev \
+            pkg-config \
+            zlib1g-dev \
+            libncurses5-dev \
+            libncursesw5-dev \
+            libtinfo6 \
+            cmake \
+            libffi-dev \
+            libssl-dev \
+            gettext \
+            autopoint \
+            libbz2-dev \
+            liblzma-dev \
+            libreadline-dev \
+            libgdbm-dev \
+            libdb-dev \
+            uuid-dev \
+            tk-dev
+      # 5. Install Rust
+      - name: Install Rust
+        run: |
+          curl https://sh.rustup.rs -sSf | sh -s -- -y
+          echo "$HOME/.cargo/bin" >> "$GITHUB_PATH"
+          "$HOME/.cargo/bin/rustc" --version
+          "$HOME/.cargo/bin/cargo" --version
+      # 6. Install Buildozer
+      - name: Install Buildozer
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install \
+            git+https://github.com/kivy/buildozer.git
+          python -m pip install \
+            legacy-cgi \
+            setuptools \
+            cython==0.29.34
+      # 7. Fix buildozer.spec
+      - name: Fix buildozer.spec
+        run: |
+          # Remove old/duplicate configuration
+          sed -i '/^[[:space:]]*p4a.branch[[:space:]]*=/d' buildozer.spec
+          sed -i '/^[[:space:]]*android.api[[:space:]]*=/d' buildozer.spec
+          sed -i '/^[[:space:]]*android.ndk[[:space:]]*=/d' buildozer.spec
+          sed -i '/^[[:space:]]*android.ndk_api[[:space:]]*=/d' buildozer.spec
+          # Remove problematic charset-normalizer
+          sed -i 's/,charset-normalizer==2.1.1//g' buildozer.spec
+          sed -i 's/charset-normalizer==2.1.1,//g' buildozer.spec
+          sed -i 's/charset-normalizer==2.1.1//g' buildozer.spec
+          # Python 3.14 / p4a configuration
+          printf '\np4a.branch = develop\n' >> buildozer.spec
+          printf 'android.api = 36\n' >> buildozer.spec
+          printf 'android.ndk = 29\n' >> buildozer.spec
+          echo "======================================"
+          echo "FINAL REQUIREMENTS"
+          echo "======================================"
+          grep '^requirements' buildozer.spec || true
+          echo "======================================"
+          echo "FINAL ANDROID CONFIGURATION"
+          echo "======================================"
+          grep -E \
+            '^[[:space:]]*(p4a.branch|android.api|android.ndk|android.ndk_api)[[:space:]]*=' \
+            buildozer.spec || true
+      # 8. Verify build tools
+      - name: Verify build tools
+        run: |
+          echo "===== LIBTOOL ====="
+          libtool --version
+          echo "===== LIBTOOLIZE ====="
+          libtoolize --version
+          echo "===== AUTOCONF ====="
+          autoconf --version
+          echo "===== AUTOMAKE ====="
+          automake --version
+          echo "===== PYTHON ====="
+          python --version
+          echo "===== JAVA ====="
+          java -version
+      # 9. Clean previous Buildozer cache
+      - name: Clean Buildozer cache
+        run: |
+          rm -rf .buildozer
+          rm -rf bin
+      # 10. Build APK
+      - name: Build APK
+        run: |
+          buildozer -v android debug
+      # 11. Check generated APK
+      - name: Check generated APK
+        run: |
+          echo "======================================"
+          echo "GENERATED APK FILES"
+          echo "======================================"
+          find bin \
+            -maxdepth 1 \
+            -type f \
+            -name "*.apk" \
+            -print
+      # 12. Upload APK
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: BELKURI-CRUNCH-APK
+          path: bin/*.apk
+          if-no-files-found: error

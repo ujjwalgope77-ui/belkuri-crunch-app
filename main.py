@@ -132,7 +132,8 @@ class HomeScreen(Screen):
 
         content.add_widget(Label(text="Why BELKURI CRUNCH?", font_size=dp(21), bold=True, color=DARK,
                                  size_hint_y=None, height=dp(45)))
-        for 
+        for item in items:
+    print(item)
         FEATURES = [
         ("icons/"image":potato.png", "Fresh Potato"),
         ("icons/"image":crunchy.png", "Extra Crunchy"),

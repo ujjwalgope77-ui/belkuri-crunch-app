@@ -131,7 +131,7 @@ class HomeScreen(Screen):
         content.add_widget(shop)
 
         content.add_widget(Label(text="Why BELKURI CRUNCH?", font_size=dp(21), bold=True, color=DARK,
-                                 size_hint_y=None, height=dp(45)))
+        size_hint_y=None, height=dp(45)))
         FEATURES = [
             ("potato.png", "Fresh Potato"),
             ("crunchy.png", "Extra Crunchy"),
@@ -139,8 +139,16 @@ class HomeScreen(Screen):
             ("heart.png", "Made With Care"),
         ]
         for icon, feature in FEATURES:
-            content.add_widget(Label(text=feature, font_size=dp(17), color=DARK,
-                                     size_hint_y=None, height=dp(42)))
+            row = BoxLayout(orientation="horizontal", size_hint_y=None,
+                            height=dp(50), spacing=dp(10),
+                            padding=[dp(20), 0])
+            row.add_widget(Image(source=icon, size_hint_x=None,
+                                 width=dp(40)))
+            lbl = Label(text=feature, font_size=dp(17), color=DARK,
+                        halign="left", valign="middle")
+            lbl.bind(size=lambda inst, val: setattr(inst, "text_size", val))
+            row.add_widget(lbl)
+            content.add_widget(row)
 
         view = create_button("🥔  VIEW PRODUCTS", GREEN, dp(55))
         view.bind(on_release=lambda x: setattr(self.manager, "current", "products"))

@@ -1,1 +1,51 @@
+name: Build BELKURI CRUNCH APK
 
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y git zip unzip autoconf automake libtool libtool-bin libltdl-dev pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo6 cmake libffi-dev libssl-dev gettext autopoint
+
+      - name: Install Buildozer
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install buildozer cython setuptools
+
+      - name: Fix buildozer.spec
+        run: |
+          sed -i '/^[[:space:]]*\(p4a.branch\|android.api\|android.ndk\|android.ndk_api\|android.accept_sdk_license\)[[:space:]]*=/d' buildozer.spec
+          sed -i '/^\[app\]/a p4a.branch = develop\nandroid.api = 34\nandroid.ndk = 25b\nandroid.accept_sdk_license = True' buildozer.spec
+          grep -nE '^(\[|requirements|p4a|android\.(api|ndk|accept))' buildozer.spec
+
+      - name: Build APK
+        run: buildozer -v android debug
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: BELKURI-CRUNCH-APK
+          path: bin/*.apk
+          if-no-files-found: error

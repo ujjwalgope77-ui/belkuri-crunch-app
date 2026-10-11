@@ -301,6 +301,11 @@ class OrderScreen(Screen):
      
 layout = GridLayout(cols=1, spacing=dp(12), padding=dp(12), size_hint_y=None)
         layout.bind(minimum_height=layout.setter("height"))
+{"id": 1, "name": "Classic1 Potato Chips", "bengali": "ক্লাসিক পটেটো চিপস", "price": 5, "emoji": "🥔"},
+    {"id": 2, "name": "Masala1 Chips", "bengali": "মশালা চিপস", "price": 5, "emoji": "🌶️"},
+    {"id": 3, "name": "Chili1 Spicy Chips", "bengali": "স্পাইসি চিপস", "price": 10, "emoji": "🔥"},
+    {"id": 4, "name": "Special1 Crunch", "bengali": "স্পেশাল ক্রাঞ্চ", "price": 20, "emoji": "⭐"},
+]
 
         
    class abcScreen(abc):
@@ -311,6 +316,11 @@ layout = GridLayout(cols=1, spacing=dp(12), padding=dp(12), size_hint_y=None)
         root.add_widget(Header("📦 view"))
         
         scroll = ScrollView()
+       {"id": 1, "name": "Classic2 Potato Chips", "bengali": "ক্লাসিক পটেটো চিপস", "price": 5, "emoji": "🥔"},
+    {"id": 2, "name": "Masala2 Chips", "bengali": "মশালা চিপস", "price": 5, "emoji": "🌶️"},
+    {"id": 3, "name": "Chili2 Spicy Chips", "bengali": "স্পাইসি চিপস", "price": 10, "emoji": "🔥"},
+    {"id": 4, "name": "Special2 Crunch", "bengali": "স্পেশাল ক্রাঞ্চ", "price": 20, "emoji": "⭐"},
+]
             
 layout = GridLayout(cols=1, spacing=dp(12), padding=dp(12), size_hint_y=None)
         layout.bind(minimum_height=layout.setter("height"))

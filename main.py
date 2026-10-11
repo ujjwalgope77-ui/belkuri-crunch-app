@@ -87,6 +87,8 @@ class BottomNavigation(BoxLayout):
             ("🥔\nProducts", "products"),
             ("🛒\nCart", "cart"),
             ("📦\nOrder", "order"),
+            ("\nview", "view"),
+            ("\nabc", "abc"),
         ]:
             btn = Button(text=text, font_size=dp(12), bold=True, color=DARK,
                          background_normal="", background_color=WHITE)

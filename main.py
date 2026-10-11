@@ -289,7 +289,7 @@ class OrderScreen(Screen):
 
         content.add_widget(Label(text="ORDER SUMMARY", font_size=dp(19), bold=True, color=ORANGE,
                                  size_hint_y=None, height=dp(45)))
-        class viewScreen(view):
+ class viewScreen(view):
         def on_pre_enter(self):
         self.clear_widgets()
         root = BoxLayout(orientation="vertical", spacing=dp(5))
@@ -297,6 +297,10 @@ class OrderScreen(Screen):
         root.add_widget(Header("📦 view"))
         
         scroll = ScrollView()
+     
+     
+layout = GridLayout(cols=1, spacing=dp(12), padding=dp(12), size_hint_y=None)
+        layout.bind(minimum_height=layout.setter("height"))
 
         
    class abcScreen(abc):
@@ -308,6 +312,8 @@ class OrderScreen(Screen):
         
         scroll = ScrollView()
             
+layout = GridLayout(cols=1, spacing=dp(12), padding=dp(12), size_hint_y=None)
+        layout.bind(minimum_height=layout.setter("height"))
 
         summary = ""
         for item in cart.values():

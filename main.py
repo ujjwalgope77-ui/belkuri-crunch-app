@@ -289,6 +289,16 @@ class OrderScreen(Screen):
 
         content.add_widget(Label(text="ORDER SUMMARY", font_size=dp(19), bold=True, color=ORANGE,
                                  size_hint_y=None, height=dp(45)))
+        class viewScreen(view):
+        def on_pre_enter(self):
+        self.clear_widgets()
+        root = BoxLayout(orientation="vertical", spacing=dp(5))
+        
+        root.add_widget(Header("📦 view"))
+        
+        scroll = ScrollView()
+   
+            
 
         summary = ""
         for item in cart.values():

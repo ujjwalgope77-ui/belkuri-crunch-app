@@ -297,7 +297,16 @@ class OrderScreen(Screen):
         root.add_widget(Header("📦 view"))
         
         scroll = ScrollView()
-   
+
+        
+   class abcScreen(abc):
+        def on_pre_enter(self):
+        self.clear_widgets()
+        root = BoxLayout(orientation="vertical", spacing=dp(5))
+        
+        root.add_widget(Header("📦 view"))
+        
+        scroll = ScrollView()
             
 
         summary = ""
